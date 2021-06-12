@@ -6,6 +6,17 @@
 {% if user.is_authenticated %}
   Привет, {{ user.username }}!
   <p><a href="{% url 'logout' %}">Выйти</a></p>
+
+  <ul>
+    {% for post in object_list %}
+      <h2>{{ post.author }}</h2>
+      <img src="{{ post.image.url}}" alt="{{ post.author }}" width="200">
+    {% endfor %}
+  </ul>
+  <a href="{% url 'add_post' %}">Создать пост</a>
+
+
+
 {% else %}
   <p>Вы не вошли</p>
   <a href="{% url 'login' %}">Войти</a>
