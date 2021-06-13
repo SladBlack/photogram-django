@@ -16,12 +16,22 @@
 
   <ul>
     {% for post in object_list %}
-      <h2>{{ post.author }}</h2>
+    <a href="{% url 'post_detail' pk=post.pk %}">
+      <h3>{{ post.author }}</h3>
+    </a>
+
       <img src="{{ post.image.url}}" alt="{{ post.author }}" width="200">
+      <p>Просмотров: {{ post.view_count }}</p>
+
+      <form action="{% url 'post_delete' pk=post.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Удалить</button>
+      </form>
     {% endfor %}
   </ul>
+
 {% else %}
-  <p>Вы не вошли</p>
+  <p>Войдите в аккаунт или создайте новый</p>
   <a href="{% url 'login' %}">Войти</a>
   <a href="{% url 'signup' %}">Регистрация</a>
 {% endif %}
