@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <a href="{% url 'posts' %}">
+        <h1>Главная</h1>
+    </a>
+
     <div class="post">
         <h1>{{ post.author }}</h1>
         <img src="{{ post.image.url}}" alt="{{ post.author }}" height="600">

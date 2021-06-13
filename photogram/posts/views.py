@@ -29,6 +29,19 @@ class PostDetailView(DeleteView):
     model = Post
     template_name = 'posts/post_detail.html'
 
+    def get_object(self):
+        post = super().get_object()
+        post.view_count += 1
+        post.save()
+
+        self.view_count = post.view_count
+        return post
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['view_count'] = self.view_count
+        return context
+
 
 class DeletePost(DeleteView):
     """Удаление поста"""
@@ -36,9 +49,7 @@ class DeletePost(DeleteView):
     success_url = reverse_lazy('posts')
 
     def get_object(self, queryset=None):
-        """ Hook to ensure object is owned by request.user. """
-        obj = super(DeletePost, self).get_object()
-        if not obj.author == self.request.user:
-            print('error')
+        post = super(DeletePost, self).get_object()
+        if not post.author == self.request.user:
             raise Http404
-        return obj
+        return post

@@ -20,9 +20,8 @@
       <h3>{{ post.author }}</h3>
     </a>
 
-
       <img src="{{ post.image.url}}" alt="{{ post.author }}" width="200">
-
+      <p>Просмотров: {{ post.view_count }}</p>
 
       <form action="{% url 'post_delete' pk=post.pk %}" method="POST">
         {% csrf_token %}

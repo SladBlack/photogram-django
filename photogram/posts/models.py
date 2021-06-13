@@ -17,6 +17,7 @@ class Post(models.Model):
                                on_delete=models.CASCADE,
                                verbose_name='Пользователь')
     image = models.ImageField(upload_to='images/')
+    view_count = models.IntegerField(default=0)
 
     def delete(self, *args, **kwargs):
         self.image.delete()
@@ -24,3 +25,4 @@ class Post(models.Model):
 
     def __str__(self):
         return str(self.author)
+
