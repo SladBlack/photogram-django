@@ -1,5 +1,6 @@
+from django.http import Http404
 from django.urls import reverse_lazy
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, DeleteView
 
 from .models import Post
 from .forms import PostForm
@@ -21,3 +22,23 @@ class PostsView(FormView):
         for item in self.request.FILES.getlist('image'):
             Post.objects.create(image=item, author=self.request.user)
         return super().form_valid(form)
+
+
+class PostDetailView(DeleteView):
+    """Страница с отельным постом"""
+    model = Post
+    template_name = 'posts/post_detail.html'
+
+
+class DeletePost(DeleteView):
+    """Удаление поста"""
+    model = Post
+    success_url = reverse_lazy('posts')
+
+    def get_object(self, queryset=None):
+        """ Hook to ensure object is owned by request.user. """
+        obj = super(DeletePost, self).get_object()
+        if not obj.author == self.request.user:
+            print('error')
+            raise Http404
+        return obj

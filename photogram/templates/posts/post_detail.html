@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="post">
+        <h1>{{ post.author }}</h1>
+        <img src="{{ post.image.url}}" alt="{{ post.author }}" height="600">
+    </div>
+{% endblock %}
