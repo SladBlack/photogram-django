@@ -18,9 +18,9 @@ class Post(models.Model):
                                null=True,
                                on_delete=models.CASCADE,
                                verbose_name='Пользователь')
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/', verbose_name='Изображение')
     view_count = models.IntegerField(default=0)
-    tag = models.CharField(max_length=30, choices=TAG_CHOICES, blank=True)
+    tag = models.CharField(max_length=30, choices=TAG_CHOICES, blank=True, verbose_name='Тэг')
 
     def delete(self, *args, **kwargs):
         self.image.delete()

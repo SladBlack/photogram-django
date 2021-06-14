@@ -1,44 +1,67 @@
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Новости{% endblock %}
 
 {% block content %}
 
 {% if user.is_authenticated %}
-  Привет, {{ user.username }}!
-  <p><a href="{% url 'logout' %}">Выйти</a></p>
 
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Добавить">
-  </form>
-
-  <ul>
-    {% for post in object_list %}
-
-      <img src="{{ post.image.url}}" alt="{{ post.author }}" width="200">
-      <a href="{% url 'post_detail' pk=post.pk %}">
-        <p>{{ post.author }}</p>
-      </a>
-
-      <p>{{ post.get_tag_display }}</p>
-      <p>Просмотров: {{ post.view_count }}</p>
-
-    {% if user == post.author or user.is_staff %}
-      <form action="{% url 'post_delete' pk=post.pk %}" method="POST">
-          {% csrf_token %}
-          <button type="submit">Удалить</button>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 offset-lg-1">
+      <form method="post" enctype="multipart/form-data" class="create-post-form">
+        <h4>Создать пост</h4>
+        {% csrf_token %}
+        {{ form.image }}
+        {{ form.tag }}
+        <input type="submit" class="btn btn-success" value="Добавить">
       </form>
-    {% endif %}
-      {% if user.is_staff %}
-      <form action="{% url 'post_update' pk=post.pk %}" method="POST">
-          {% csrf_token %}
-          <button type="submit">Редактировать</button>
-      </form>
-      {% endif %}
-    {% endfor %}
-  </ul>
+    </div>
+  </div>
+</div>
+
+<div class="post">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 offset-lg-4">
+        <ul>
+          {% for post in object_list %}
+          <div class="post-wrapper">
+            <a href="{% url 'post_detail' pk=post.pk %}">
+              <img class="post-img" src="{{ post.image.url}}" alt="{{ post.author }}" width="320">
+            </a>
+            
+            <div class="post-info">
+              <p><i class="fas fa-user"></i> {{ post.author }}</p>
+              {% if post.tag %}
+                <p><i class="fas fa-hashtag"></i> {{ post.get_tag_display }}</p>
+              {% endif %}
+              <p><i class="fas fa-eye"></i> {{ post.view_count }}</p>
+            </div>
+            
+            <div class="post-buttons">
+              {% if user == post.author or user.is_staff %}
+              <form action="{% url 'post_delete' pk=post.pk %}" method="POST">
+                  {% csrf_token %}
+                  <button class="btn btn-danger" type="submit">Удалить</button>
+              </form>
+              {% endif %}
+              {% if user.is_staff %}
+                <form action="{% url 'post_update' pk=post.pk %}" method="POST">
+                  {% csrf_token %}
+                  <button class="btn btn-secondary" type="submit">Редактировать</button>
+                </form>
+              {% endif %}
+            </div>
+      
+          </div>
+          {% endfor %}
+          </ul>
+      </div>
+    </div>
+  </div>
+</div>
+  
 
 {% if user.is_staff %}
   {% for user in users %}
@@ -54,9 +77,17 @@
 {% endif %}
 
 {% else %}
-  <p>Войдите в аккаунт или создайте новый</p>
-  <a href="{% url 'login' %}">Войти</a>
-  <a href="{% url 'signup' %}">Регистрация</a>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 offset-lg-4 source-page-wrapper">
+        <a href="{% url 'posts' %}">
+          <h1 class="logo black-text">Photogram</h1>
+        </a>
+        <h5>Сервис загрузки изображений</h5>
+      </div>
+    </div>
+  </div>
+  
 {% endif %}
 
 {% endblock %}

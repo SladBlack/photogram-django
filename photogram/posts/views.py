@@ -9,11 +9,6 @@ from .models import Post
 from .forms import PostForm, TagForm
 
 
-class FilterName:
-    def get_posts(self):
-        return Post.objects.all()
-
-
 class PostsView(FormView):
     """Лента постов"""
     model = Post
@@ -67,7 +62,7 @@ class DeletePost(LoginRequiredMixin, DeleteView):
 class UpdatePost(LoginRequiredMixin, UpdateView):
     """Редактирование поста"""
     model = Post
-    fields = ['image']
+    fields = ['image', 'tag']
     template_name_suffix = '_update'
 
 
