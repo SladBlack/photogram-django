@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView
 from django.views.generic.edit import FormView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Post
-from .forms import PostForm, TagForm
+from .forms import PostForm
 
 
 class PostsView(FormView):
@@ -64,11 +64,3 @@ class UpdatePost(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['image', 'tag']
     template_name_suffix = '_update'
-
-
-class DeleteUser(LoginRequiredMixin, DeleteView):
-    """Удаление пользователя"""
-    model = User
-    success_url = reverse_lazy('posts')
-
-

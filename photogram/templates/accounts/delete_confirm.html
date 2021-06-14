@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Подтверждение{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-4 offset-lg-4">
+        <a class="back-href" href="{% url 'user_list' %}">< Назад</a>
+        <form method="post" enctype="multipart/form-data" class="post-update">
+          <h2>Удаление аккаунта?</h2>
+          <p>Вы уверены, что хотите удалить пользователя <spa style="font-weight: bold;">{{ user.username }}?</span></p>
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" class="btn btn-primary" value="Подтвердить">
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

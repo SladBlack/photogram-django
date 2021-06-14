@@ -24,13 +24,17 @@
           
           <div class="nav-menu">
             {% if user.is_authenticated %}
-              <p class="nav-item">{{ user.username }}</p>
+              <p class="nav-item"><i class="fas fa-user"></i> {{ user.username }}</p>
               <button class="btn btn-dark nav-item">
                 <a href="{% url 'logout' %}">
                   <i class="fas fa-sign-out-alt"></i>Выйти
                 </a>
-              </button> 
-            
+              </button>
+            {% if user.is_staff %}
+              <a href="{% url 'user_list' %}">
+                <input type="submit" value="Админка" class="btn btn-warning">
+              </a>
+            {% endif %}
             {% else %}
               <a href="{% url 'login' %}">
                 <input type="submit" class="btn btn-dark" value="Войти">
