@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Вход{% endblock %}
 
 {% block content %}
-<h2>Вход</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Войти</button>
-</form>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4 offset-lg-4">
+      <form method="post" enctype="multipart/form-data" class="post-update">
+        <h2>Вход</h2>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" value="Войти">
+        <p>Ещё нет аккаунта? <a class="black-text" href="{% url 'login' %}">Зарегистрироваться</a></p>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

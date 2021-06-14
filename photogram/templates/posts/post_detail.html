@@ -1,12 +1,38 @@
 {% extends 'base.html' %}
 
-{% block content %}
-    <a href="{% url 'posts' %}">
-        <h1>Главная</h1>
-    </a>
+{% block title %} Пост {{ post.pk }} {% endblock %}
 
-    <div class="post">
-        <h1>{{ post.author }}</h1>
-        <img src="{{ post.image.url}}" alt="{{ post.author }}" height="200">
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <a class="back-href" href="{% url 'posts' %}">< Назад</a>
+            <div class="image-detail-wrapper">
+                <img class="post-detail-image" src="{{ post.image.url}}" alt="{{ post.author }}" width="500px">
+                <div class="post-detail-info">
+                    <p><i class="fas fa-user"></i> Автор: {{ post.author }}</p>
+                    <p><i class="fas fa-hashtag"></i> Просмотров: {{ post.view_count }}</p>
+                    <p><i class="fas fa-eye"></i> Тэг: {{ post.get_tag_display }}</p>
+                    <div class="post-buttons">
+                        {% if user == post.author or user.is_staff %}
+                        <form action="{% url 'post_delete' pk=post.pk %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-danger" type="submit">Удалить</button>
+                        </form>
+                        {% endif %}
+                        {% if user.is_staff %}
+                          <form action="{% url 'post_update' pk=post.pk %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn btn-secondary" type="submit">Редактировать</button>
+                          </form>
+                        {% endif %}
+                      </div>
+                </div>
+
+                
+            </div>
+            
+        </div>
     </div>
+</div>
 {% endblock %}
