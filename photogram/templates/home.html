@@ -16,19 +16,42 @@
 
   <ul>
     {% for post in object_list %}
-    <a href="{% url 'post_detail' pk=post.pk %}">
-      <h3>{{ post.author }}</h3>
-    </a>
 
       <img src="{{ post.image.url}}" alt="{{ post.author }}" width="200">
+      <a href="{% url 'post_detail' pk=post.pk %}">
+        <p>{{ post.author }}</p>
+      </a>
+
+      <p>{{ post.get_tag_display }}</p>
       <p>Просмотров: {{ post.view_count }}</p>
 
+    {% if user == post.author or user.is_staff %}
       <form action="{% url 'post_delete' pk=post.pk %}" method="POST">
-        {% csrf_token %}
-        <button type="submit">Удалить</button>
+          {% csrf_token %}
+          <button type="submit">Удалить</button>
       </form>
+    {% endif %}
+      {% if user.is_staff %}
+      <form action="{% url 'post_update' pk=post.pk %}" method="POST">
+          {% csrf_token %}
+          <button type="submit">Редактировать</button>
+      </form>
+      {% endif %}
     {% endfor %}
   </ul>
+
+{% if user.is_staff %}
+  {% for user in users %}
+    <p>{{ user.username }}</p>
+    {% if not user.is_staff %}
+      <form action="{% url 'user_delete' pk=user.pk %}" method="POST">
+          {% csrf_token %}
+          <button type="submit">Удалить</button>
+      </form>
+    {% endif %}
+    <br>
+  {% endfor %}
+{% endif %}
 
 {% else %}
   <p>Войдите в аккаунт или создайте новый</p>
