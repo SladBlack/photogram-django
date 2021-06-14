@@ -21,6 +21,8 @@
       <a href="{% url 'post_detail' pk=post.pk %}">
         <p>{{ post.author }}</p>
       </a>
+
+      <p>{{ post.get_tag_display }}</p>
       <p>Просмотров: {{ post.view_count }}</p>
 
     {% if user == post.author or user.is_staff %}

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from .services import TAG_CHOICES
+
 
 class ImageQuerySet(models.QuerySet):
 
@@ -18,6 +20,7 @@ class Post(models.Model):
                                verbose_name='Пользователь')
     image = models.ImageField(upload_to='images/')
     view_count = models.IntegerField(default=0)
+    tag = models.CharField(max_length=30, choices=TAG_CHOICES, blank=True)
 
     def delete(self, *args, **kwargs):
         self.image.delete()
