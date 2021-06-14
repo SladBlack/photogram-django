@@ -23,6 +23,9 @@ class Post(models.Model):
         self.image.delete()
         super(Post, self).delete(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return "/post/%i/update" % self.pk
+
     def __str__(self):
         return str(self.author)
 

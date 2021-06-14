@@ -1,6 +1,9 @@
+from django.contrib.auth.models import User
 from django.http import Http404
 from django.urls import reverse_lazy
-from django.views.generic.edit import FormView, DeleteView
+from django.views.generic import DetailView
+from django.views.generic.edit import FormView, DeleteView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Post
 from .forms import PostForm
@@ -16,6 +19,7 @@ class PostsView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['object_list'] = Post.objects.all().order_by('id').reverse()
+        context['users'] = User.objects.all()
         return context
 
     def form_valid(self, form):
@@ -24,8 +28,8 @@ class PostsView(FormView):
         return super().form_valid(form)
 
 
-class PostDetailView(DeleteView):
-    """Страница с отельным постом"""
+class PostDetailView(LoginRequiredMixin, DetailView):
+    """Страница с отдельным постом"""
     model = Post
     template_name = 'posts/post_detail.html'
 
@@ -43,7 +47,7 @@ class PostDetailView(DeleteView):
         return context
 
 
-class DeletePost(DeleteView):
+class DeletePost(LoginRequiredMixin, DeleteView):
     """Удаление поста"""
     model = Post
     success_url = reverse_lazy('posts')
@@ -53,3 +57,16 @@ class DeletePost(DeleteView):
         if not post.author == self.request.user:
             raise Http404
         return post
+
+
+class UpdatePost(LoginRequiredMixin, UpdateView):
+    """Редактирование поста"""
+    model = Post
+    fields = ['image']
+    template_name_suffix = '_update'
+
+
+class DeleteUser(LoginRequiredMixin, DeleteView):
+    """Удаление пользователя"""
+    model = User
+    success_url = reverse_lazy('posts')
