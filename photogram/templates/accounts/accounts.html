@@ -12,6 +12,7 @@
                     <tr>
                         <th>Пользователь</th>
                         <th>Роль</th>
+                        <th>Статус</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -25,7 +26,25 @@
                         {% else  %}
                             <td>Пользователь</td>
                         {% endif %}
-                        <td><input type="submit" class="btn btn-secondary" value="Заблокировать"></td>
+
+                        {% if user.is_active %}
+                            <td>Активен</td>
+                        {% else %}
+                            <td>Заблокирован</td>
+                        {% endif %}
+                        <td>
+                            {% if not user.is_staff %}
+                                <form action="{% url 'user_block' pk=user.pk %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" id="id_id_username" name="id" value="{{ user.id }}">
+                                    {% if user.is_active %}
+                                        <input type="submit" class="btn btn-secondary" value="Заблокировать">
+                                    {% else %}
+                                        <input type="submit" class="btn btn-primary" value="Разблокировать">
+                                     {% endif %}
+                                </form>
+                            {% endif %}
+                        </td>
                         <td>
                             {% if not user.is_staff %}
                             <a href="{% url 'user_delete' pk=user.pk %}">
@@ -37,7 +56,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{% url 'signup' %}">
+            <a href="{% url 'user_create' %}">
                 <input type="submit" class="btn btn-success mb-3" value="+ Создать нового пользователя">
             </a>
         </div>

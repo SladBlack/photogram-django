@@ -13,8 +13,8 @@
 
 
 </head>
-<body>
-  <header class="header">
+<body class="d-flex flex-column min-vh-100">
+  <header class="header ">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -25,10 +25,10 @@
           <div class="nav-menu">
             {% if user.is_authenticated %}
               <p class="nav-item"><i class="fas fa-user"></i> {{ user.username }}</p>
-              <button class="btn btn-dark nav-item">
-                <a href="{% url 'logout' %}">
-                  <i class="fas fa-sign-out-alt"></i>Выйти
-                </a>
+              <a href="{% url 'logout' %}">
+                <input type="submit" value="Выйти" class="btn btn-dark nav-item">
+              </a>
+        
               </button>
             {% if user.is_staff %}
               <a href="{% url 'user_list' %}">
@@ -50,13 +50,17 @@
       </div>
     </div>
   </header>
-  <main>
+  <main class="wrapper flex-grow-1">
     {% block content %}
     {% endblock %}
   </main>
 
-  <footer class="blue">
-    <p>2021 ©Photogram</p>
+  <footer class="blue navbar-fixed-bottom row-fluid">
+    <div class="navbar-inner">
+      <div class="container">
+        <p>2021 ©Photogram</p>
+      </div>
+    </div>
   </footer>
 
   <script src="https://use.fontawesome.com/f6d634fa70.js"></script>

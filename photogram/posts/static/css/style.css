@@ -1,13 +1,10 @@
 .blue{background-color: cornflowerblue}
-.black-text{color: #000;}
 
-a,
-a:hover{
-    text-decoration: none;
-    color: #fff;
-}
+.black-text, .black-text:hover{color: #000;}
 
 i{font-family: fontawesome !important;}
+
+a, a:hover{text-decoration: none;}
 
 /*Шапка*/
 
@@ -19,8 +16,9 @@ i{font-family: fontawesome !important;}
     border-radius: 0 0 10px 10px;
 }
 
-.logo{    
+.logo, .logo:hover{    
     font-weight: bold;
+    color: #fff;
 }
 
 
@@ -32,11 +30,11 @@ i{font-family: fontawesome !important;}
 
 .nav-item{
     margin: 0 10px;
+    color:#fff;
 }
 
 /* Подвал */
 footer{
-    flex: 0 0 auto;
     text-align: center;
     color: #fff;
     padding: 20px;
@@ -160,4 +158,60 @@ footer{
 }
 .table tbody tr:last-child td:last-child {
 	border-radius: 0 0 20px 0;
+}
+
+
+/* Нумерация страниц */
+.page-nav{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.pagination-item{
+    text-align: center;
+}
+
+.page-num{
+    width: 30px;
+    height: 30px;
+    padding-top: 3px;
+    transition: border 1s ease-out;
+}
+
+.page-action,
+.page-num:hover{
+    border: 1px solid #0072C0;
+    border-radius: 50%;
+    color:  #0072C0;
+}
+
+
+
+.page-action:hover{
+    background-color:  #0072C0;
+    color: #fff;
+    transition: 0.2s all ease-in-out;
+}
+
+
+a.prev-el:hover{
+    color: #0072C0;
+}
+.fa:hover{
+    color: #0072C0;
+}
+
+.fa-arrow-left,
+.fa-arrow-right{
+    margin-top: 6px;
+}
+
+/*____________________________________________________________*/
+
+.help-text{
+    font-size: 12px;
+    text-align: left;
+    padding: 0;
+    margin: 0;
 }

@@ -9,7 +9,7 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-10 offset-lg-1">
-      <form method="post" enctype="multipart/form-data" class="create-post-form">
+      <form method="post" enctype="multipart/form-data" class="create-post-form" action="">
         <h4>Создать пост</h4>
         {% csrf_token %}
         {{ form.image }}
@@ -20,12 +20,32 @@
   </div>
 </div>
 
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 offset-lg-1">
+      <form method="get" class="create-post-form" action='{% url "filter" %}'>
+        <h4>Поиск по тэгу</h4>
+        {% csrf_token %}
+        {{ form.tag }}
+        <input type="submit" class="btn btn-success" value="Поиск">
+        <a href="{% url 'posts' %}" class="black-text">Сбросить фильтр</a>
+      </form>
+
+        <a href="{% url 'my-posts' %}" class="d-flex justify-content-center">
+            <input type="submit" class="btn btn-secondary" value="Показать только мои посты">
+        </a>
+
+    </div>
+  </div>
+</div>
+
 <div class="post">
   <div class="container">
     <div class="row">
       <div class="col-lg-4 offset-lg-4">
-        <ul>
-          {% for post in object_list %}
+
+          {% for post in page_obj %}
+          <ul>
           <div class="post-wrapper">
             <a href="{% url 'post_detail' pk=post.pk %}">
               <img class="post-img" src="{{ post.image.url}}" alt="{{ post.author }}" width="320">
@@ -55,8 +75,38 @@
             </div>
       
           </div>
+            </ul>
           {% endfor %}
-          </ul>
+
+
+
+
+          <nav class="page-nav articles-nav ">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <a class="prev-el" href="?page={{ page_obj.previous_page_number }}">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    </a>
+                {% endif %}
+
+                {% for n in page_obj.paginator.page_range %}
+                    {% if n > page_obj.number|add:-4 and n < page_obj.number|add:4 %}
+                         <li class="pagination-item">
+                             <a href='?page={{ n }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}'>
+                                 <p class="page-num {% if n == page_obj.number %}page-action{% endif %}">{{ n }}</p>
+                             </a>
+                         </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a class="prev-el" href="?page={{ page_obj.next_page_number }}">
+                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                {% endif %}
+            </ul>
+          </nav>
+
       </div>
     </div>
   </div>
@@ -67,7 +117,7 @@
     <div class="row">
       <div class="col-lg-4 offset-lg-4 source-page-wrapper">
         <a href="{% url 'posts' %}">
-          <h1 class="logo black-text">Photogram</h1>
+          <h1 class="logo black-text"><span style="color: #000;">Photogram</span></h1>
         </a>
         <h5>Сервис загрузки изображений</h5>
       </div>
