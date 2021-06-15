@@ -1,13 +1,14 @@
 .blue{background-color: cornflowerblue}
+
 .black-text{color: #000;}
+
+i{font-family: fontawesome !important;}
 
 a,
 a:hover{
     text-decoration: none;
     color: #fff;
 }
-
-i{font-family: fontawesome !important;}
 
 /*Шапка*/
 
@@ -36,7 +37,6 @@ i{font-family: fontawesome !important;}
 
 /* Подвал */
 footer{
-    flex: 0 0 auto;
     text-align: center;
     color: #fff;
     padding: 20px;

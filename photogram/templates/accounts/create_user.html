@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Создание нового пользователя{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+      <div class="col-lg-4 offset-lg-4">
+        <a class="back-href" href="{% url 'user_list' %}">< Назад</a>
+        <form method="post" enctype="multipart/form-data" class="post-update">
+          <h2>Создать</h2>
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" class="btn btn-primary" value="Создать">
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
