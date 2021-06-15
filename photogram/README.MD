@@ -26,8 +26,7 @@
 2. Клонируем репозиторий  
 `$ git clone https://github.com/SladBlack/photogram-django.git`
 3. Переходим в папку с файлом manage.py <br>
-`$ cd photogram-django/`<br>
-`$ cd photogram/`<br>
+`$ cd photogram-django/photogram/`<br>
 4. Устанавливаем зависимости из *requiremets.txt*  
 `$ pip install -r requirements.txt`
 5. Выполняем миграции<br>
