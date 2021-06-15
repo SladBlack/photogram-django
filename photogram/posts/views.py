@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.http import Http404
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
@@ -9,17 +8,17 @@ from .models import Post
 from .forms import PostForm
 
 
-class PostsView(FormView):
+class PostsView(FormView, ListView):
     """Лента постов"""
     model = Post
+    paginate_by = 4
     form_class = PostForm
     template_name = 'home.html'
     success_url = reverse_lazy('posts')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['object_list'] = Post.objects.all().order_by('id').reverse()
-        return context
+    def get_queryset(self):
+        query = Post.objects.all().order_by('id').reverse()
+        return query
 
     def form_valid(self, form):
         for item in self.request.FILES.getlist('image'):
@@ -71,8 +70,28 @@ class FilterView(ListView, FormView):
     template_name = 'home.html'
     form_class = PostForm
     success_url = reverse_lazy('posts')
+    template_name_suffix = 'page_obj'
+    paginate_by = 4
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object_list'] = Post.objects.filter(tag=self.request.GET.get('tag')).order_by('id').reverse()
+        context['page_obj'] = Post.objects.filter(tag=self.request.GET.get('tag')).order_by('id').reverse()
+        return context
+
+
+class MyPostsView(ListView, FormView):
+    model = Post
+    template_name = 'home.html'
+    template_name_suffix = 'page_obj'
+    form_class = PostForm
+    success_url = reverse_lazy('posts')
+    paginate_by = 4
+
+    def get_queryset(self):
+        query = Post.objects.filter(author=self.request.user).order_by('id').reverse()
+        return query
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_obj'] = Post.objects.filter(author=self.request.user).order_by('id').reverse()
         return context

@@ -25,10 +25,10 @@
           <div class="nav-menu">
             {% if user.is_authenticated %}
               <p class="nav-item"><i class="fas fa-user"></i> {{ user.username }}</p>
-              <button class="btn btn-dark nav-item">
-                <a href="{% url 'logout' %}">
-                  <i class="fas fa-sign-out-alt"></i>Выйти
-                </a>
+              <a href="{% url 'logout' %}">
+                <input type="submit" value="Выйти" class="btn btn-dark nav-item">
+              </a>
+        
               </button>
             {% if user.is_staff %}
               <a href="{% url 'user_list' %}">

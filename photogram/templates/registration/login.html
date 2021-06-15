@@ -9,9 +9,39 @@
       <form method="post" enctype="multipart/form-data" class="post-update">
         <h2>Вход</h2>
         {% csrf_token %}
-        {{ form.as_p }}
+        <input type="text" name="username" autofocus="" autocapitalize="none"
+         autocomplete="username" maxlength="150" required="" id="id_username" placeholder="Логин" class="mb-2">
+        <input type="password" name="password" autocomplete="current-password"
+         required="" id="id_password" placeholder="Пароль" class="mb-2">
+         
+         {% if form.errors %}
+         <div class="alert alert-danger text-left">
+           {% for x in form.errors %}
+               {%if "__all__" in x %}
+                   -Неправильный логин или пароль
+               {%else%}
+                   {%if "username" in x %}
+                       -Пользователь с таким логином уже существует
+                       <br>
+                   {%endif%}
+                   {%if "password" in x %}
+                       -Пароли не совпадают
+                       <div class="alert alert-warning" role="alert">
+                           <p>Ваш пароль не может быть слишком похож на вашу другую личную информацию.</p>
+                           <p>Ваш пароль должен содержать не менее 8 символов.</p>
+                           <p>Ваш пароль не может быть обычным паролем.</p>
+                           <p>Ваш пароль не может быть полностью числовым.</p>
+                       </div>
+                       <br>
+                   {%endif%}
+
+               {%endif%}
+           {%endfor%}
+         </div>
+         {% endif %}
+
         <input type="submit" class="btn btn-primary" value="Войти">
-        <p>Ещё нет аккаунта? <a class="black-text" href="{% url 'login' %}">Зарегистрироваться</a></p>
+        <p>Ещё нет аккаунта? <a class="black-text" href="{% url 'signup' %}">Зарегистрироваться</a></p>
       </form>
     </div>
   </div>
