@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.urls import reverse_lazy
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import FormView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -19,7 +19,6 @@ class PostsView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['object_list'] = Post.objects.all().order_by('id').reverse()
-        context['users'] = User.objects.all()
         return context
 
     def form_valid(self, form):
@@ -64,3 +63,16 @@ class UpdatePost(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['image', 'tag']
     template_name_suffix = '_update'
+
+
+class FilterView(ListView, FormView):
+    """Фильтрация постов по тегу"""
+    model = Post
+    template_name = 'home.html'
+    form_class = PostForm
+    success_url = reverse_lazy('posts')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_list'] = Post.objects.filter(tag=self.request.GET.get('tag')).order_by('id').reverse()
+        return context

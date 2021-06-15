@@ -9,12 +9,25 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-10 offset-lg-1">
-      <form method="post" enctype="multipart/form-data" class="create-post-form">
+      <form method="post" enctype="multipart/form-data" class="create-post-form" action="">
         <h4>Создать пост</h4>
         {% csrf_token %}
         {{ form.image }}
         {{ form.tag }}
         <input type="submit" class="btn btn-success" value="Добавить">
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 offset-lg-1">
+      <form method="get" class="create-post-form" action='{% url "filter" %}'>
+        <h4>Поиск по фильтрам</h4>
+        {% csrf_token %}
+        {{ form.tag }}
+        <input type="submit" class="btn btn-success" value="Поиск">
       </form>
     </div>
   </div>

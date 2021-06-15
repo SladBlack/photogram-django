@@ -56,3 +56,5 @@ class BlockUser(LoginRequiredMixin, FormView):
         user.save()
         context['users'] = User.objects.all()
         return context
+
+
