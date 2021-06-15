@@ -120,3 +120,4 @@ LOGOUT_REDIRECT_URL = 'posts'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media')
+
