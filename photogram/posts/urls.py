@@ -1,6 +1,7 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-from . import views
+from . import views, api
 
 
 urlpatterns = [
@@ -11,3 +12,7 @@ urlpatterns = [
     path('post/<int:pk>/delete/', views.DeletePost.as_view(), name='post_delete'),
     path('my-posts/', views.MyPostsView.as_view(), name='my-posts'),
 ]
+
+router = DefaultRouter()
+router.register(r'posts-rest', api.PostModelView, basename='post')
+urlpatterns += router.urls
