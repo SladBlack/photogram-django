@@ -15,4 +15,5 @@ urlpatterns = [
 
 router = DefaultRouter()
 router.register(r'posts-rest', api.PostModelView, basename='post')
+router.register(r'user-rest', api.UserModelView, basename='user')
 urlpatterns += router.urls

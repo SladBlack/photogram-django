@@ -1,10 +1,14 @@
+from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 
 from .models import Post
-from .serializers import PostsListSerializer
+from .serializers import (PostsListSerializer,
+                          UserListSerializer,
+                          UserUpdateSerializer,
+                          UserCreateSerializer)
 from .premissions import IsAuthorEntry
 
 
@@ -37,3 +41,17 @@ class PostModelView(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]
+
+
+class UserModelView(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAdminUser]
+    queryset = User.objects.all()
+
+    def get_serializer_class(self):
+        if self.action == 'update':
+            return UserUpdateSerializer
+        elif self.action == 'create':
+            return UserCreateSerializer
+        else:
+            return UserListSerializer
+
