@@ -16,10 +16,7 @@ from .premissions import IsAuthorEntry
 class PostModelView(viewsets.ModelViewSet):
     """Просмотр/Создание/Редактирование/Удаление поста"""
     parser_classes = (MultiPartParser, FormParser,)
-    permission_classes = [permissions.IsAuthenticated]
     queryset = Post.objects.all()
-    permission_classes_by_action = {'update': [permissions.IsAdminUser],
-                                    'destroy': [IsAuthorEntry]}
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
