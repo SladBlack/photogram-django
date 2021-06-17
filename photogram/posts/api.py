@@ -6,6 +6,7 @@ from rest_framework.response import Response
 
 from .models import Post
 from .serializers import (PostsListSerializer,
+                          PostCreateSerializer,
                           UserListSerializer,
                           UserUpdateSerializer,
                           UserCreateSerializer)
@@ -17,14 +18,13 @@ class PostModelView(viewsets.ModelViewSet):
     parser_classes = (MultiPartParser, FormParser,)
     permission_classes = [permissions.IsAuthenticated]
     queryset = Post.objects.all()
-    serializer_class = PostsListSerializer
     permission_classes_by_action = {'update': [permissions.IsAdminUser],
                                     'destroy': [IsAuthorEntry]}
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
-        # for item in self.request.FILES.getlist('image'):
-        #     Post.objects.create(image=item, author=self.request.user, tag=self.request.tag)
+        for item in self.request.FILES.getlist('image'):
+            Post.objects.create(image=item, author=self.request.user, tag=self.request.POST.get('tag'))
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -41,6 +41,13 @@ class PostModelView(viewsets.ModelViewSet):
         else:
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            serializer_class = PostCreateSerializer
+        else:
+            serializer_class = PostsListSerializer
+        return serializer_class
 
 
 class UserModelView(viewsets.ModelViewSet):
