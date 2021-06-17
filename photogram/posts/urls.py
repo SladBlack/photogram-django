@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from . import views, api
+from . import views, viewsets
 
 
 urlpatterns = [
@@ -14,6 +14,6 @@ urlpatterns = [
 ]
 
 router = DefaultRouter()
-router.register(r'posts-rest', api.PostModelView, basename='post')
-router.register(r'user-rest', api.UserModelView, basename='user')
+router.register(r'posts-rest', viewsets.PostModelView, basename='post')
+router.register(r'user-rest', viewsets.UserModelView, basename='user')
 urlpatterns += router.urls
