@@ -44,10 +44,9 @@ class PostModelView(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == 'create':
-            serializer_class = PostCreateSerializer
+            return PostCreateSerializer
         else:
-            serializer_class = PostsListSerializer
-        return serializer_class
+            return PostsListSerializer
 
 
 class UserModelView(viewsets.ModelViewSet):
